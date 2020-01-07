@@ -1,11 +1,13 @@
 #include <cstdio>
+#include <iostream>
 #include <cstring>
 #include <algorithm>
+#include <vector>
 #include <queue>
 
 using namespace std;
 
-const int MAX_V=500+10;
+const int MAX_V=1000+10;
 const int INF=0x3f3f3f3f;
 
 //用于表示边的结构体（终点，流量，反向边）
@@ -80,22 +82,23 @@ int max_flow(int s,int t)
 
 int main()
 {
-    int m,n,s,t,l,sum=0;
-    scanf("%d%d",&m,&n);
-    s=0,t=m+n+1;
-    for(int i=1;i<=m;i++) scanf("%d",&l),add(s,i,l),sum+=l;
-    for(int i=m+1;i<=m+n;i++) scanf("%d",&l),add(i,t,l);
-    for(int i=1;i<=m;i++) for(int j=m+1;j<=m+n;j++) add(i,j,1);
-    if(max_flow(s,t)<sum) return 0*printf("0\n");
-    printf("1\n");
-    for(int i=1;i<=m;i++)
+    int n,m,k,q,v;
+    scanf("%d%d%d",&n,&m,&k);
+    int s=0,r=n+m+1,t=r+1;
+    add(s,r,k);
+    for(int u=1;u<=n;u++)
     {
-        for(int j=0;j<G[i].size();j++)
+        scanf("%d",&q);
+        add(s,u,1);
+        add(r,u,1);
+        while(q--)
         {
-            if(G[G[i][j].to][i].cap>0&&G[i][j].to)
-                printf("%d ",G[i][j].to-m);
+            scanf("%d",&v);
+            add(u,v+n,1);
         }
-        printf("\n");
     }
+    for(int v=1;v<=m;v++)
+        add(v+n,t,1);
+    printf("%d\n",max_flow(s,t));
     return 0;
 }
